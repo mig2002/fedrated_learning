@@ -1,0 +1,50 @@
+# GradInversion Attack Configuration
+
+attack:
+  name: "GradInversion"
+  type: "gradient_based"
+  
+optimization:
+  num_iterations: 20000
+  learning_rate: 0.1
+  optimizer: "Adam"
+  
+losses:
+  grad_matching:
+    weight: 1.0
+    metric: "L2"  # L2 or cosine
+  fidelity:
+    tv_weight: 1e-4
+    l2_weight: 1e-6
+    bn_weight: 0.1
+  group_consistency:
+    weight: 0.01
+    use_registration: true
+    num_seeds: 8
+    registration_method: "RANSAC-Flow"
+    
+label_restoration:
+  enabled: true
+  method: "min_sum_FC"  # From Equation 8
+  
+regularization:
+  noise_injection: true
+  noise_std: 0.2
+  
+target_batch_sizes:
+  - 4
+  - 8
+  - 16
+  - 32
+  - 48
+  
+dataset: "CIFAR-10"
+model: "ResNet18"
+device: "cuda"
+
+evaluation_metrics:
+  - "reconstruction_mse"
+  - "attack_success_rate"
+  - "lpips_similarity"
+  - "psnr"
+  - "ssim"

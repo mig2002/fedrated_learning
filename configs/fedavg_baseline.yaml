@@ -1,0 +1,39 @@
+# FedAvg Baseline Configuration for Category 1
+
+experiment:
+  name: "FedAvg-Baseline-Privacy"
+  seed: 42
+  num_rounds: 100
+  
+clients:
+  num_clients: 10
+  client_fraction: 0.5
+  local_epochs: 5
+  local_batch_size: 32
+  
+optimizer:
+  name: "SGD"
+  learning_rate: 0.01
+  momentum: 0.9
+  weight_decay: 0.0
+  
+model:
+  architecture: "ResNet18"
+  input_size: 32
+  num_classes: 10
+  
+data:
+  dataset: "CIFAR-10"
+  train_split: 0.9
+  test_split: 0.1
+  dirichlet_alpha: 0.1  # Non-IID setting
+  normalize: true
+  
+loss:
+  type: "CrossEntropyLoss"
+  
+evaluation:
+  eval_interval: 1
+  eval_on_server: true
+  
+device: "cuda"
